@@ -11,4 +11,3 @@ incluirTemplate ('header');
     incluirTemplate ('footer');
 ?>
 
-//comentarios de la plantilla lalala
