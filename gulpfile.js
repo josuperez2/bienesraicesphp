@@ -8,6 +8,7 @@ import concat from 'gulp-concat'
 import terser from 'gulp-terser'
 import sharp from 'sharp'
 import rename from 'gulp-rename'
+import plumber from 'gulp-plumber'
 
 const sass = gulpSass(dartSass)
 
@@ -16,28 +17,32 @@ const paths = {
     js: 'src/js/**/*.js'
 }
 
-export function css( done ) {
-    src(paths.scss, {sourcemaps: true})
-        .pipe( sass({
-            outputStyle: 'compressed'
-        }).on('error', sass.logError) )
-        .pipe( dest('./build/css', {sourcemaps: '.'}) );
-    done()
+export function css(done) {
+    src(paths.scss, { sourcemaps: true })
+        .pipe(plumber({
+            errorHandler: function(err) {
+                console.error('❌ Error en SCSS:', err.message);
+                this.emit('end');
+            }
+        }))
+        .pipe(sass({ outputStyle: 'compressed' }))
+        .pipe(dest('./build/css', { sourcemaps: '.' }));
+    done();
 }
 
-export function js( done ) {
+export function js(done) {
     src(paths.js)
-      .pipe(concat('bundle.js')) // final output file name
-      .pipe(terser())
-      .pipe(rename({ suffix: '.min' }))
-      .pipe(dest('./build/js'))
-    done()
+        .pipe(concat('bundle.js'))
+        .pipe(terser())
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(dest('./build/js'));
+    done();
 }
 
 export async function imagenes(done) {
     const srcDir = './src/img';
     const buildDir = './build/img';
-    const images =  await glob('./src/img/**/*')
+    const images = await glob('./src/img/**/*');
 
     images.forEach(file => {
         const relativePath = path.relative(srcDir, path.dirname(file));
@@ -49,17 +54,15 @@ export async function imagenes(done) {
 
 function procesarImagenes(file, outputSubDir) {
     if (!fs.existsSync(outputSubDir)) {
-        fs.mkdirSync(outputSubDir, { recursive: true })
+        fs.mkdirSync(outputSubDir, { recursive: true });
     }
-    const baseName = path.basename(file, path.extname(file))
-    const extName = path.extname(file)
+    const baseName = path.basename(file, path.extname(file));
+    const extName = path.extname(file);
 
     if (extName.toLowerCase() === '.svg') {
-        // If it's an SVG file, move it to the output directory
         const outputFile = path.join(outputSubDir, `${baseName}${extName}`);
-    fs.copyFileSync(file, outputFile);
+        fs.copyFileSync(file, outputFile);
     } else {
-        // For other image formats, process them with sharp
         const outputFile = path.join(outputSubDir, `${baseName}${extName}`);
         const outputFileWebp = path.join(outputSubDir, `${baseName}.webp`);
         const outputFileAvif = path.join(outputSubDir, `${baseName}.avif`);
@@ -71,12 +74,10 @@ function procesarImagenes(file, outputSubDir) {
     }
 }
 
-
-
 export function dev() {
-    watch( paths.scss, css );
-    watch( paths.js, js );
-    watch('src/img/**/*.{png,jpg}', imagenes)
+    watch(paths.scss, css);
+    watch(paths.js, js);
+    watch('src/img/**/*.{png,jpg}', imagenes);
 }
 
-export default series( js, css, imagenes, dev )
+export default series(js, css, imagenes, dev);
