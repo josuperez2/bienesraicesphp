@@ -1,5 +1,10 @@
 <?php
+require '../includes/funciones.php';    
+$auth = estaAutenticado();
 
+    if (!$auth){
+        header('Location: /');
+    }
 
 //importar la conexion
 require '../includes/config/database.php';
@@ -34,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $query = "DELETE FROM propiedades WHERE ID = $id";
     }
 
-    $resultaso = mysqli_query($db, $query);
+    $resultado = mysqli_query($db, $query);
     if ($resultado) {
         header("Location: /admin?resultado=3");
     }
@@ -42,7 +47,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 // incluye un template
-require '../includes/funciones.php';
 incluirTemplate('header');
 ?>
 

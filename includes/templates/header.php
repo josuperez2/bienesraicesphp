@@ -1,3 +1,12 @@
+<?php 
+    
+    if(!isset($_SESSION)){
+        session_start();
+    }
+    //VERIFICAR QUE ESTA INICIANDO SESION
+    $auth = $_SESSION['login'] ?? null;
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,9 +36,15 @@
                         <a href="anuncios.php">Anuncios</a>
                         <a href="blog.php">Blog</a>
                         <a href="contacto.php">Contacto</a>
+                        
                     </nav>
                 </div>
                 
             </div> <!--.barra-->
+            <?php
+            if ($inicio){
+                echo "<h1>Venta de Casas y Departamentos Exclusivo de Lujo</h1>"; 
+            }
+            ?>
         </div>
     </header>
