@@ -38,3 +38,4 @@ function navegacionResponsive() {
 
     navegacion.classList.toggle('mostrar')
 }
+

@@ -1,10 +1,8 @@
 <!-- PARA QUE APAREZCA EN LA PAGINA PRINCIPÁL LAS CASAS Y DEPAS EN VENTA -->
 
 <?php
-//importar la conexion
-require __DIR__ . '/../config/database.php';
-$db = conectarDB();
 
+$db = conectarDB();
 //consultar
 $query = "SELECT * FROM propiedades LIMIT $limite";
 

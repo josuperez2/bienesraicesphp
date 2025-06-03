@@ -1,5 +1,17 @@
 <?php 
 
-define('TEMPLATES_URL', __DIR__ . '/templates');
+$db = new mysqli('localhost', 'root', '', 'bienesraices_Crud');
 
-define ('FUNCIONES_URL', __DIR__ .'funciones.php');
+if (!$db) {
+    echo "Error al conectar con la base de datos";
+    exit;
+}
+
+
+require 'funciones.php'; 
+require 'config/database.php';
+require __DIR__ . '/../vendor/autoload.php';
+
+use App\Propiedad;
+
+Propiedad::setDB($db);

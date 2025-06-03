@@ -4,7 +4,8 @@
         session_start();
     }
     //VERIFICAR QUE ESTA INICIANDO SESION
-    $auth = $_SESSION['login'] ?? null;
+    $auth = $_SESSION['login'] ?? false;
+
 ?>
 
 
@@ -36,7 +37,9 @@
                         <a href="anuncios.php">Anuncios</a>
                         <a href="blog.php">Blog</a>
                         <a href="contacto.php">Contacto</a>
-                        
+                        <?php if ($auth): ?>
+                            <a href="cerrar-sesion.php">Cerrar Sesion</a>
+                        <?php endif; ?>
                     </nav>
                 </div>
                 

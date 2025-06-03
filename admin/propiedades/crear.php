@@ -1,13 +1,12 @@
 <?php
 
-require '../../includes/funciones.php';
-$auth = estaAutenticado();
+require '../../includes/app.php';
 
-if (!$auth) {
-    header('Location: /');
-}
+use App\Propiedad;
+
+$auth = estaAutenticado(); 
 //base de datos
-require '../../includes/config/database.php';
+
 $db = conectarDB();
 
 //consultar obtener vendedores
@@ -29,13 +28,21 @@ $vendedores_Id = '';
 
 //ejecutar el codigo despues de que el usuario envia el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $propiedad = new Propiedad($_POST);
+
+    $propiedad->guardar();
+
+
+
+    
     //   echo "<pre>";
     //  var_dump($_POST);
     //   echo "</pre>";
 
-    // echo "<pre>";
-    //  var_dump($_FILES);
-    //   echo "</pre>";
+    echo "<pre>";
+     var_dump($_FILES);
+      echo "</pre>";
 
     $imagen = $_FILES['imagen'];
 
@@ -118,8 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         //insertar base de datos
-        $query = "INSERT INTO propiedades (titulo, precio, imagen, descripcion, habitaciones, wc, estacionamiento, creado, vendedores_Id)
-        VALUES ('$titulo', '$precio', '$nombreImagen', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$creado','$vendedores_Id') ";
+        
 
         //echo $query;
 

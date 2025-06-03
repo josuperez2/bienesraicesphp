@@ -6,9 +6,8 @@ $id = filter_var($id, FILTER_VALIDATE_INT);
 if (!$id) {
     header('location: /'); //redireccionar al inicio en caso de que no exista la propiedad
 }
-
+require 'includes/app.php';
 //importar la conexion
-require 'includes/config/database.php';
 $db = conectarDB();
 
 //consultar
@@ -23,7 +22,7 @@ if (!$resultado -> num_rows) {
 
 $propiedad = mysqli_fetch_assoc($resultado);
 
-require 'includes/funciones.php';
+
 incluirTemplate ('header');
 ?> 
 
