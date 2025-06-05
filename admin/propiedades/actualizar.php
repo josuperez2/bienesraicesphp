@@ -46,9 +46,9 @@ $imagen = $propiedad['imagen'];
 
 //ejecutar el codigo despues de que el usuario envia el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    echo "<pre>";
-    var_dump($_POST);
-    echo "</pre>";
+    // echo "<pre>";
+    // var_dump($_POST);
+    // echo "</pre>";
 
     
     // echo "<pre>";
